@@ -194,6 +194,11 @@ public class Main {
                         break;
                     case 6:
                         principal();
+                    default:
+                        scanner.nextLine();
+                        System.out.println("Opção inválida. Tente novamente.");
+                        Thread.sleep(2000);
+                        principalLivros();
                 }
             } catch (Exception e) {
                 scanner.nextLine();
