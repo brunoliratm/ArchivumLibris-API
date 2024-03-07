@@ -2,6 +2,7 @@
 
 ![Project2](images/principal2.png)
 
+</br>
 <h2 align="center">
 <a href="Project">BookStore system implemented in JAVA</a> as part of a project for my 🏫college
 </h2>
