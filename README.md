@@ -1,7 +1,7 @@
 # ArchivumLibris API
 
 <div align="center">
-  <img src="images/principal2.png" alt="ArchivumLibris Logo" width="400">
+  <img src="https://capsule-render.vercel.app/api?type=blur&height=300&color=gradient&text=Archivum%20Libris&reversal=true&textBg=false&fontColor=fff&stroke=000" alt="ArchivumLibris Logo" width="400">
 
   **A modern RESTful API for book management built with Spring Boot**
 
@@ -31,8 +31,6 @@ This project implements a modern approach to software architecture:
 - **Domain-Driven Design** - Focus on the core domain and domain logic
 - **Hexagonal Architecture** - Clear separation between application core and external dependencies
 - **Feature Slices** - Organize code by feature rather than technical layers
-
-![Architecture Overview](images/principal.png)
 
 ## 📂 Project Structure
 
