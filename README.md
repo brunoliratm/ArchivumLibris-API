@@ -1,7 +1,8 @@
-# ArchivumLibris API
+
 
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=blur&height=300&color=gradient&text=Archivum%20Libris&reversal=true&textBg=false&fontColor=fff&stroke=000" alt="ArchivumLibris Logo" width="400">
+
+  # ArchivumLibris API
 
   **A modern RESTful API for book management built with Spring Boot**
 
