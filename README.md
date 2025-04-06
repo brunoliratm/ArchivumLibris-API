@@ -1,14 +1,14 @@
 <h1 align="center">ArchivumLibris API</h1>
 
-<div align="center">
+<div>
   <img src="images/principal2.png" alt="ArchivumLibris Logo">
 </div>
 
-<h2 align="center">
+<h2>
   A modern RESTful API for a book management system built with Spring Boot
 </h2>
 
-<h3 align="center">
+<h3>
   <strong>The system provides endpoints for managing books, users, and purchases with a clean, maintainable architecture.</strong>
 </h3>
 
@@ -16,9 +16,9 @@
 
 <h2 align="center">:sparkler: Architecture</h2>
 
-<h3 align="center">
+<h3>
   This project implements <strong>Hexagonal Architecture</strong> (Ports and Adapters) with Feature Slices organization to achieve:
-  <ul align="center" style="list-style-position: inside;">
+  <ul style="list-style-position: inside;">
     <li>Clear separation of concerns</li>
     <li>Domain-driven design</li>
     <li>Testability at all levels</li>
@@ -50,9 +50,9 @@ ArchivumLibris-API/
 
 <h2 align="center">:bulb: Key Concepts</h2>
 
-<h3 align="center">
+<h3>
   The architecture supports the core object-oriented principles:
-  <ul align="center" style="list-style-position: inside;">
+  <ul style="list-style-position: inside;">
     <li><i>Encapsulation</i> - through well-defined boundaries</li>
     <li><i>Inheritance</i> - in domain models where appropriate</li>
     <li><i>Polymorphism</i> - via interfaces at architecture boundaries</li>
@@ -64,7 +64,7 @@ ArchivumLibris-API/
 
 <h2 align="center">:rocket: Features</h2>
 
-<div align="center">
+<div>
   <h3>:books: Book Management</h3>
   <p>Create, update, delete, and search books</p>
   
@@ -77,13 +77,7 @@ ArchivumLibris-API/
 
 <br/>
 
-<div align="center">
-  <img src="images/principal.png" alt="System Overview">
-</div>
-
-<br/>
-
-<div align="center">
+<div>
   <h2>:gear: Technologies</h2>
   <p>
     <strong>Spring Boot</strong> • 
