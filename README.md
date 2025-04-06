@@ -1,90 +1,171 @@
-<h1 align="center">ArchivumLibris API</h1>
+# ArchivumLibris API
 
-<div>
-  <img src="images/principal2.png" alt="ArchivumLibris Logo">
+<div align="center">
+  <img src="images/principal2.png" alt="ArchivumLibris Logo" width="400">
+
+  **A modern RESTful API for book management built with Spring Boot**
+
+  [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+  [![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=flat-square&logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
+  [![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat-square&logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
+  [![Flyway](https://img.shields.io/badge/Flyway-CC0200?style=flat-square&logo=flyway&logoColor=white)](https://flywaydb.org/)
+  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+  [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)](https://swagger.io/)
+
 </div>
 
-<h2>
-  A modern RESTful API for a book management system built with Spring Boot
-</h2>
+## 📚 Overview
 
-<h3>
-  <strong>The system provides endpoints for managing books, users, and purchases with a clean, maintainable architecture.</strong>
-</h3>
+ArchivumLibris API provides endpoints for managing books, users, and purchases with a clean, maintainable architecture. The system allows for:
 
-<br/>
+- **Book catalog management** - Create, update, search and delete books
+- **User management** - Registration, authentication and profile management
+- **Purchase processing** - Create and track book orders
 
-<h2 align="center">:sparkler: Architecture</h2>
+The project follows **Hexagonal Architecture** (Ports and Adapters) principles with Feature Slices organization to achieve excellent separation of concerns and maintainability.
 
-<h3>
-  This project implements <strong>Hexagonal Architecture</strong> (Ports and Adapters) with Feature Slices organization to achieve:
-  <ul style="list-style-position: inside;">
-    <li>Clear separation of concerns</li>
-    <li>Domain-driven design</li>
-    <li>Testability at all levels</li>
-    <li>Technology independence</li>
-  </ul>
-</h3>
+## 🔷 Architecture
 
-<br/>
+This project implements a modern approach to software architecture:
 
-<h2 align="center">:building_construction: Project Structure</h2>
+- **Domain-Driven Design** - Focus on the core domain and domain logic
+- **Hexagonal Architecture** - Clear separation between application core and external dependencies
+- **Feature Slices** - Organize code by feature rather than technical layers
+
+![Architecture Overview](images/principal.png)
+
+## 📂 Project Structure
 
 ```
 ArchivumLibris-API/
 │
 ├── src/main/java/com/archivumlibris/
 │   ├── application/        # Application services and DTOs
+│   │   ├── book/
+│   │   ├── user/
+│   │   └── purchase/
+│   │
 │   ├── domain/             # Domain entities and business logic
+│   │   ├── book/
+│   │   ├── user/
+│   │   └── purchase/
+│   │
 │   ├── adapter/
 │   │   ├── in/             # Input adapters (REST controllers)
+│   │   │   └── rest/
+│   │   │       ├── book/
+│   │   │       ├── user/
+│   │   │       └── purchase/
+│   │   │
 │   │   └── out/            # Output adapters (Repositories, external services)
+│   │       └── persistence/
+│   │           ├── book/
+│   │           ├── user/
+│   │           └── purchase/
 │   │
 │   ├── config/             # Application configurations
+│   │   ├── SwaggerConfig.java
+│   │   └── WebSecurityConfig.java
+│   │
 │   └── ArchivumLibrisApiApplication.java
 │
-└── src/main/resources/     # Configuration files and resources
+├── src/main/resources/
+│   ├── application.yml
+│   └── db/migration/
+│       └── V1__create_tables.sql
+│
+└── src/test/java/com/archivumlibris/
+    ├── unit/
+    └── integration/
 ```
 
-<br/>
+## 🧩 Key Concepts
 
-<h2 align="center">:bulb: Key Concepts</h2>
+The architecture supports the core object-oriented principles:
 
-<h3>
-  The architecture supports the core object-oriented principles:
-  <ul style="list-style-position: inside;">
-    <li><i>Encapsulation</i> - through well-defined boundaries</li>
-    <li><i>Inheritance</i> - in domain models where appropriate</li>
-    <li><i>Polymorphism</i> - via interfaces at architecture boundaries</li>
-    <li><i>Abstraction</i> - through ports defining clear contracts</li>
-  </ul>
-</h3>
+- **Encapsulation** - Through well-defined boundaries
+- **Inheritance** - In domain models where appropriate
+- **Polymorphism** - Via interfaces at architecture boundaries
+- **Abstraction** - Through ports defining clear contracts
 
-<br/>
+## 🚀 Features
 
-<h2 align="center">:rocket: Features</h2>
+### 📖 Book Management
 
-<div>
-  <h3>:books: Book Management</h3>
-  <p>Create, update, delete, and search books</p>
-  
-  <h3>:busts_in_silhouette: User Management</h3>
-  <p>User registration, authentication, and profile management</p>
-  
-  <h3>:shopping_cart: Purchase Processing</h3>
-  <p>Create and manage book purchases</p>
-</div>
+Complete book catalog management with rich metadata support:
+- Create, read, update, and delete books
+- Search and filter books by various criteria
+- Manage book categories and authors
 
-<br/>
+### 👥 User Management
 
-<div>
-  <h2>:gear: Technologies</h2>
-  <p>
-    <strong>Spring Boot</strong> • 
-    <strong>Spring Data JPA</strong> • 
-    <strong>Spring Security</strong> • 
-    <strong>Flyway</strong> • 
-    <strong>PostgreSQL</strong> • 
-    <strong>Swagger</strong>
-  </p>
-</div>
+Comprehensive user system:
+- User registration and authentication
+- Profile management
+- Role-based access control
+
+### 🛒 Purchase Processing
+
+End-to-end purchase flow:
+- Shopping cart functionality
+- Order processing
+- Purchase history
+- Payment integration (planned)
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- JDK 21+
+- Maven 3.8+
+- PostgreSQL
+
+### Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/ArchivumLibris-API.git
+   ```
+
+2. Navigate to the project directory
+   ```bash
+   cd ArchivumLibris-API
+   ```
+
+3. Build the project
+   ```bash
+   ./mvnw clean install
+   ```
+
+4. Run the application
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+
+## 📋 API Documentation
+
+API documentation is available via Swagger UI at `/swagger-ui.html` after starting the application.
+
+## 🧪 Testing
+
+```bash
+./mvnw test
+```
+
+## 🤝 Contributing
+
+Contributions make the open source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📮 Contact
+
+Project Link: [https://github.com/brunoliratm/ArchivumLibris-API](https://github.com/brunoliratm/ArchivumLibris-API)
