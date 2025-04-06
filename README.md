@@ -1,8 +1,7 @@
-
-
 <div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&height=210&color=gradient&text=Archivum%20Libris&reversal=true&textBg=false" alt="Archivum Libris" width="100%">
 
-  # ArchivumLibris API
+  <br>
 
   **A modern RESTful API for book management built with Spring Boot**
 
@@ -107,9 +106,7 @@ Comprehensive user system:
 
 End-to-end purchase flow:
 - Shopping cart functionality
-- Order processing
 - Purchase history
-- Payment integration (planned)
 
 ## 🛠️ Getting Started
 
