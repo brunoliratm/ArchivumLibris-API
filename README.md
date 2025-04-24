@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&height=210&color=gradient&text=Archivum%20Libris&reversal=true&textBg=false" alt="Archivum Libris" width="100%">
+  <img src="assets/ArchivumLibris.svg" alt="Archivum Libris" width="50%">
 
   <br>
 
@@ -36,45 +36,50 @@ This project implements a modern approach to software architecture:
 
 ```
 ArchivumLibris-API/
+│├── src/main/java/com/archivumlibris/
+│   ├── book/
+│   │   ├── domain/
+│   │   │   ├── model/          
+│   │   │   ├── port/
+│   │   │   │   ├── in/        
+│   │   │   │   └── out/            
+│   │   ├── application/
+│   │   │   └── service/        
+│   │   ├── adapter/
+│   │   │   ├── in/
+│   │   │   │   └── web/             
+│   │   │   └── out/
+│   │   │       └── persistence/    
+│   │   └── dto/                  
 │
-├── src/main/java/com/archivumlibris/
-│   ├── application/        # Application services and DTOs
-│   │   ├── book/
-│   │   ├── user/
-│   │   └── purchase/
-│   │
-│   ├── domain/             # Domain entities and business logic
-│   │   ├── book/
-│   │   ├── user/
-│   │   └── purchase/
-│   │
-│   ├── adapter/
-│   │   ├── in/             # Input adapters (REST controllers)
-│   │   │   └── rest/
-│   │   │       ├── book/
-│   │   │       ├── user/
-│   │   │       └── purchase/
-│   │   │
-│   │   └── out/            # Output adapters (Repositories, external services)
-│   │       └── persistence/
-│   │           ├── book/
-│   │           ├── user/
-│   │           └── purchase/
-│   │
-│   ├── config/             # Application configurations
-│   │   ├── SwaggerConfig.java
-│   │   └── WebSecurityConfig.java
-│   │
+│   ├── user/
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── adapter/
+│   │   └── dto/
+│
+│   ├── purchase/
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── adapter/
+│   │   └── dto/
+│
+│   ├── infrastructure/
+│   │   ├── config/            
+│   │   └── security/     
+│
 │   └── ArchivumLibrisApiApplication.java
 │
 ├── src/main/resources/
 │   ├── application.yml
 │   └── db/migration/
-│       └── V1__create_tables.sql
+│       └── V1__create_initial_tables.sql
 │
 └── src/test/java/com/archivumlibris/
-    ├── unit/
-    └── integration/
+    ├── book/
+    ├── user/
+    └── purchase/
+
 ```
 
 ## 🧩 Key Concepts
@@ -120,7 +125,7 @@ End-to-end purchase flow:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/ArchivumLibris-API.git
+   git clone https://github.com/brunoliratm/ArchivumLibris-API.git
    ```
 
 2. Navigate to the project directory
