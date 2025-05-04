@@ -2,7 +2,7 @@ package com.archivumlibris.book.adapter.out;
 
 import com.archivumlibris.book.domain.model.Book;
 import com.archivumlibris.book.domain.model.BookGenre;
-import com.archivumlibris.book.domain.port.BookRepositoryPort;
+import com.archivumlibris.book.domain.port.out.BookRepositoryPort;
 import com.archivumlibris.book.mapper.BookMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -12,7 +12,7 @@ public interface BookRepositoryJpa extends JpaRepository<BookEntity, Long> {
     @Query("""
             SELECT b FROM BookEntity b
             WHERE (:genre IS NULL OR b.genre =:genre)
-            AND (:name IS NULL OR LOWER(CAST(b.title AS string)) LIKE LOWER(CONCAT('%', CAST(:title AS string), '%')))
+            AND (:title IS NULL OR LOWER(CAST(b.title AS string)) LIKE LOWER(CONCAT('%', CAST(:title AS string), '%')))
             AND (:publisher IS NULL OR LOWER(CAST(b.publisher AS string)) LIKE LOWER(CONCAT('%', CAST(:publisher AS string), '%')))
             AND (:author IS NULL OR LOWER(CAST(b.author AS string)) LIKE LOWER(CONCAT('%', CAST(:author AS string), '%')))
             """

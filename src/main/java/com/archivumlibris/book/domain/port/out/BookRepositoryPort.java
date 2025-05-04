@@ -1,4 +1,4 @@
-package com.archivumlibris.book.domain.port;
+package com.archivumlibris.book.domain.port.out;
 
 import com.archivumlibris.book.domain.model.Book;
 import com.archivumlibris.book.domain.model.BookGenre;
