@@ -51,10 +51,11 @@ public class BookService implements BookUseCase {
   @Override
   @Transactional(readOnly = true)
   public Optional<Book> findById(Long id) {
-    if (!this.bookRepositoryPort.findById(id).isPresent()) {
+    Optional<Book> book = this.bookRepositoryPort.findById(id);
+    if (!book.isPresent()) {
       throw new BookNotFoundException();
     }
-    return this.bookRepositoryPort.findById(id);
+    return book;
   }
 
   @Override
