@@ -5,15 +5,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
+        <version>3.3.12</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.archivumlibris</groupId>
     <artifactId>archivumlibris</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <name>Archivum-Libris</name>
-    <description>ArchivumLibris-API é uma API RESTful robusta para gerenciamento de livros, usuários e compras,
-        construída com Spring Boot e princípios de arquitetura limpa.
+    <description>ArchivumLibris-API is a robust RESTful API for managing books, users, and purchases,
+        built with Spring Boot and clean architecture principles.
     </description>
     <url/>
     <licenses>
@@ -34,28 +34,16 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-			      <groupId>org.springframework.boot</groupId>
-			      <artifactId>spring-boot-starter-validation</artifactId>
-		    </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

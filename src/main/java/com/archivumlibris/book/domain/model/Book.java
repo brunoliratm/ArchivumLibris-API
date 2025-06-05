@@ -1,6 +1,7 @@
 package com.archivumlibris.book.domain.model;
 
 public class Book {
+
     private Long id;
     private String title;
     private String author;
@@ -8,10 +9,16 @@ public class Book {
     private BookGenre genre;
     private Double price;
 
-    public Book() {
-    }
+    public Book() {}
 
-    public Book(Long id, String title, String author, String publisher, BookGenre genre, Double price) {
+    public Book(
+        Long id,
+        String title,
+        String author,
+        String publisher,
+        BookGenre genre,
+        Double price
+    ) {
         this.id = id;
         this.title = title;
         this.author = author;

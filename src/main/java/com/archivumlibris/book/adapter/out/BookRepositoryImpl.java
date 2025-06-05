@@ -4,11 +4,10 @@ import com.archivumlibris.book.domain.model.Book;
 import com.archivumlibris.book.domain.model.BookGenre;
 import com.archivumlibris.book.domain.port.out.BookRepositoryPort;
 import com.archivumlibris.book.mapper.BookMapper;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public class BookRepositoryImpl implements BookRepositoryPort {
@@ -26,8 +25,16 @@ public class BookRepositoryImpl implements BookRepositoryPort {
     }
 
     @Override
-    public Page<Book> findAll(BookGenre genre, String title, String publisher, String author, Pageable pageable) {
-        return bookRepositoryJpa.findAll(genre, title, publisher, author, pageable).map(BookMapper::toDomain);
+    public Page<Book> findAll(
+        BookGenre genre,
+        String title,
+        String publisher,
+        String author,
+        Pageable pageable
+    ) {
+        return bookRepositoryJpa
+            .findAll(genre, title, publisher, author, pageable)
+            .map(BookMapper::toDomain);
     }
 
     @Override

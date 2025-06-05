@@ -4,6 +4,7 @@ import com.archivumlibris.book.adapter.out.BookEntity;
 import com.archivumlibris.book.domain.model.Book;
 
 public class BookMapper {
+
     public static BookEntity toEntity(Book book) {
         BookEntity entity = new BookEntity();
         entity.setId(book.getId());
@@ -17,13 +18,12 @@ public class BookMapper {
 
     public static Book toDomain(BookEntity entity) {
         return new Book(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getAuthor(),
-                entity.getPublisher(),
-                entity.getGenre(),
-                entity.getPrice()
+            entity.getId(),
+            entity.getTitle(),
+            entity.getAuthor(),
+            entity.getPublisher(),
+            entity.getGenre(),
+            entity.getPrice()
         );
-
     }
 }
