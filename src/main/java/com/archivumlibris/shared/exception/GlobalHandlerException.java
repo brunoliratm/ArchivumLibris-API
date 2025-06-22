@@ -10,8 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import com.archivumlibris.book.exception.BookNotFoundException;
-import com.archivumlibris.book.exception.InvalidBookDataException;
+import com.archivumlibris.exception.book.BookNotFoundException;
+import com.archivumlibris.exception.book.InvalidBookDataException;
 
 @ControllerAdvice
 public class GlobalHandlerException {
