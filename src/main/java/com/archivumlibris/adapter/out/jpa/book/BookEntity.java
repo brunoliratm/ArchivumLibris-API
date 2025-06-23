@@ -1,5 +1,6 @@
 package com.archivumlibris.adapter.out.jpa.book;
 
+import java.math.BigDecimal;
 import com.archivumlibris.domain.model.book.BookGenre;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,5 +27,5 @@ public class BookEntity {
     private BookGenre genre;
 
     @Column(nullable = false, length = 100)
-    private Double price;
+    private BigDecimal price;
 }

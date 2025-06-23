@@ -60,17 +60,10 @@ public class BookService implements BookUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> findAllBooks(
-        String genre,
-        String title,
-        String publisher,
-        String author,
-        int page
-    ) {
+    public List<Book> findAllBooks(String genre, String title, String publisher, String author,
+            int page) {
         if (page < 1) {
-            throw new InvalidPageException(
-                "Page number must be greater than 0"
-            );
+            throw new InvalidPageException("Page number must be greater than 0");
         }
 
         int pageIndex = page - 1;
@@ -85,13 +78,7 @@ public class BookService implements BookUseCase {
             }
         }
         Page<Book> books =
-            this.bookRepositoryPort.findAll(
-                    genreEnum,
-                    title,
-                    publisher,
-                    author,
-                    pageable
-                );
+                this.bookRepositoryPort.findAll(genreEnum, title, publisher, author, pageable);
         return books.getContent();
     }
 
@@ -102,15 +89,11 @@ public class BookService implements BookUseCase {
         if (book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
             throw new InvalidBookDataException("Book author cannot be empty");
         }
-        if (book.getPrice() == null || book.getPrice() <= 0) {
+        if (book.getPrice() == null || book.getPrice().signum() == -1) {
             throw new InvalidBookDataException("Book price must be positive");
         }
-        if (
-            book.getPublisher() == null || book.getPublisher().trim().isEmpty()
-        ) {
-            throw new InvalidBookDataException(
-                "Book publisher cannot be empty"
-            );
+        if (book.getPublisher() == null || book.getPublisher().trim().isEmpty()) {
+            throw new InvalidBookDataException("Book publisher cannot be empty");
         }
         if (book.getGenre() == null) {
             throw new InvalidBookDataException("Book genre cannot be null");

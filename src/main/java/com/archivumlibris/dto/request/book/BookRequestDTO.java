@@ -1,5 +1,6 @@
 package com.archivumlibris.dto.request.book;
 
+import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,5 +18,5 @@ public record BookRequestDTO(
     String genre,
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
-    Double price
+    BigDecimal price
 ) {}

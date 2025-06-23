@@ -1,5 +1,7 @@
 package com.archivumlibris.domain.model.book;
 
+import java.math.BigDecimal;
+
 public class Book {
 
     private Long id;
@@ -7,7 +9,7 @@ public class Book {
     private String author;
     private String publisher;
     private BookGenre genre;
-    private Double price;
+    private BigDecimal price;
 
     public Book() {}
 
@@ -17,7 +19,7 @@ public class Book {
         String author,
         String publisher,
         BookGenre genre,
-        Double price
+        BigDecimal price
     ) {
         this.id = id;
         this.title = title;
@@ -27,11 +29,11 @@ public class Book {
         this.price = price;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
