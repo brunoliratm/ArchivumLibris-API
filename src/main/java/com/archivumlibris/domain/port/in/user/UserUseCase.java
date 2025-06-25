@@ -1,5 +1,19 @@
 package com.archivumlibris.domain.port.in.user;
 
-public class UserUseCase {
+import java.util.List;
+import java.util.Optional;
+import com.archivumlibris.domain.model.user.User;
+
+public interface UserUseCase {
+
+    void createUser(User user);
+
+    void updateUser(User user);
+
+    void deleteUser(Long userId);
+
+    Optional<User> findById(Long userId);
+
+    List<User> findAllUsers(String name, String email, int page);
 
 }

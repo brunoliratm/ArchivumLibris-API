@@ -1,93 +1,55 @@
 package com.archivumlibris.domain.model.user;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import com.archivumlibris.domain.model.book.Book;
-
 public class User {
 
-    private UUID id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private UserRole role;
-    private List<Book> favoriteBooks;
+
+    public User() {}
 
     public User(
-        UUID id,
+        Long id,
         String name,
         String email,
         String password,
-        UserRole role,
-        List<Book> favoriteBooks
+        UserRole role
     ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.favoriteBooks = favoriteBooks != null
-            ? favoriteBooks
-            : Collections.emptyList();
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) { this.email = email; }
+
     public String getPassword() {
         return password;
     }
+
+    public void setPassword(String password) { this.password = password; }
 
     public UserRole getRole() {
         return role;
     }
 
-    public List<Book> getFavoriteBooks() {
-        return Collections.unmodifiableList(favoriteBooks);
-    }
+    public void setRole(UserRole role) {}
 
-    public boolean isAdmin() {
-        return role == UserRole.ADMIN;
-    }
-
-    public boolean isUser() {
-        return role == UserRole.USER;
-    }
-
-    public void addFavoriteBook(Book book) {
-        if (!favoriteBooks.contains(book)) {
-            favoriteBooks.add(book);
-        }
-    }
-
-    public void removeFavoriteBook(Book book) {
-        favoriteBooks.remove(book);
-    }
-
-    public void updateProfile(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
-
-    public void updatePassword(String encodedPassword) {
-        this.password = encodedPassword;
-    }
-
-    public void promoteToAdmin() {
-        this.role = UserRole.ADMIN;
-    }
-
-    public void demoteToUser() {
-        this.role = UserRole.USER;
-    }
 }

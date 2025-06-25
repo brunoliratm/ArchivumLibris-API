@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.archivumlibris.domain.model.book.BookGenre;
 
-public interface BookRepositoryJpa extends JpaRepository<BookEntity, Long> {
+public interface BookRepositoryJPA extends JpaRepository<BookEntity, Long> {
     @Query(
         """
         SELECT b FROM BookEntity b
