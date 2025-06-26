@@ -11,7 +11,7 @@ public record UserPatchRequestDTO(
     @Email(message = "Invalid Email")
     String email,
 
-    @Size(min = 6, message = "Password requires a minimum of 4 characters")
+    @Size(min = 6, message = "Password requires a minimum of 6 characters")
     String password,
 
     @Pattern(
