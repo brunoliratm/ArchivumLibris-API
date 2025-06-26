@@ -53,4 +53,9 @@ public class UserRepositoryImpl implements UserRepositoryPort {
         entity.setId(id);
         userRepositoryJpa.save(entity);
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepositoryJpa.findByEmail(email).map(UserMapper::toDomain);
+    }
 }

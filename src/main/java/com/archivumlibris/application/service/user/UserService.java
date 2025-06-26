@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.archivumlibris.domain.model.user.User;
+import com.archivumlibris.domain.model.user.UserRole;
 import com.archivumlibris.domain.port.in.user.UserUseCase;
 import com.archivumlibris.domain.port.out.user.UserRepositoryPort;
 import com.archivumlibris.dto.request.user.UserPatchRequestDTO;
@@ -18,6 +20,8 @@ import com.archivumlibris.mapper.user.UserDTOMapper;
 import com.archivumlibris.shared.exception.InvalidDataException;
 import com.archivumlibris.shared.exception.InvalidPageException;
 
+@Service
+@Transactional
 public class UserService implements UserUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
@@ -28,6 +32,9 @@ public class UserService implements UserUseCase {
 
     @Override
     public void create(UserRequestDTO userRequestDTO) {
+        userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
+            throw new InvalidDataException("Email already in use");
+        });
         User user = UserDTOMapper.toModel(userRequestDTO);
         validateUserData(user);
         this.userRepositoryPort.save(user);
@@ -35,21 +42,31 @@ public class UserService implements UserUseCase {
 
     @Override
     public void update(Long userId, UserPatchRequestDTO userPatchRequestDTO) {
-        User existingUser = this.userRepositoryPort.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User existingUser =
+                this.userRepositoryPort.findById(userId).orElseThrow(UserNotFoundException::new);
 
         User user = UserDTOMapper.toModel(userPatchRequestDTO);
         if (user.getName() != null && !user.getName().trim().isEmpty()) {
             existingUser.setName(user.getName());
         }
-        if (user.getEmail() != null && !user.getEmail().trim().isEmpty()) {
-            existingUser.setEmail(user.getEmail());
+        if (userPatchRequestDTO.email() != null && !userPatchRequestDTO.email().trim().isEmpty()
+                && !userPatchRequestDTO.email().equals(existingUser.getEmail())) {
+            userRepositoryPort.findByEmail(userPatchRequestDTO.email()).ifPresent(u -> {
+                if (!u.getId().equals(userId)) {
+                    throw new InvalidDataException("Email already in use by another user");
+                }
+            });
+            existingUser.setEmail(userPatchRequestDTO.email());
         }
         if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
             existingUser.setPassword(user.getPassword());
         }
         if (user.getRole() != null) {
-            existingUser.setRole(user.getRole());
+            try {
+                existingUser.setRole(UserRole.valueOf(userPatchRequestDTO.role()));
+            } catch (IllegalArgumentException e) {
+                throw new InvalidDataException("Invalid role: " + userPatchRequestDTO.role());
+            }
         }
 
         this.userRepositoryPort.save(existingUser);
@@ -84,8 +101,7 @@ public class UserService implements UserUseCase {
         Pageable pageable = PageRequest.of(pageIndex, 10);
 
         Page<User> users = this.userRepositoryPort.findAll(name, email, pageable);
-        return users.getContent().stream()
-                .map(UserDTOMapper::toResponseDTO)
+        return users.getContent().stream().map(UserDTOMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
