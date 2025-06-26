@@ -128,7 +128,7 @@ public class BookController {
         @RequestParam(required = false, defaultValue = "1") int page
     ) {
         return ResponseEntity.ok(
-            this.bookUseCase.findAllBooks(genre, title, publisher, author, page)
+            this.bookUseCase.findAll(genre, title, publisher, author, page)
         );
     }
 

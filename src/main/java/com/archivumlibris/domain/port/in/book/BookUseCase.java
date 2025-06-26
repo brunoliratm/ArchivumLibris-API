@@ -14,7 +14,7 @@ public interface BookUseCase {
 
     Optional<BookResponseDTO> findById(Long bookId);
 
-    List<BookResponseDTO> findAllBooks(
+    List<BookResponseDTO> findAll(
         String genre,
         String title,
         String publisher,

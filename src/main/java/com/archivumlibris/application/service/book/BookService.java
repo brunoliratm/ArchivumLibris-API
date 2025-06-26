@@ -66,7 +66,7 @@ public class BookService implements BookUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookResponseDTO> findAllBooks(String genre, String title, String publisher, String author,
+    public List<BookResponseDTO> findAll(String genre, String title, String publisher, String author,
             int page) {
         if (page < 1) {
             throw new InvalidPageException();
