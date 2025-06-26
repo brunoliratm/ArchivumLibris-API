@@ -2,18 +2,20 @@ package com.archivumlibris.domain.port.in.user;
 
 import java.util.List;
 import java.util.Optional;
-import com.archivumlibris.domain.model.user.User;
+import com.archivumlibris.dto.request.user.UserPatchRequestDTO;
+import com.archivumlibris.dto.request.user.UserRequestDTO;
+import com.archivumlibris.dto.response.user.UserResponseDTO;
 
 public interface UserUseCase {
 
-    void createUser(User user);
+    void create(UserRequestDTO userRequestDTO);
 
-    void updateUser(Long userId, User user);
+    void update(Long userId, UserPatchRequestDTO userPatchRequestDTO);
 
-    void deleteUser(Long userId);
+    void delete(Long userId);
 
-    Optional<User> findById(Long userId);
+    Optional<UserResponseDTO> findById(Long userId);
 
-    List<User> findAllUsers(String name, String email, int page);
+    List<UserResponseDTO> findAll(String name, String email, int page);
 
 }

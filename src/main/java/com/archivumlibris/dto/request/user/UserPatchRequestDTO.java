@@ -12,7 +12,7 @@ public record UserPatchRequestDTO(
         message = "Email format is invalid. Please provide a valid email address."
     )
     String email,
-    @Min(value= 4, message = "Password requires a minimum of 4 characters") String pssword,
+    @Min(value= 4, message = "Password requires a minimum of 4 characters") String password,
     @Pattern(
         regexp = "^(USER|ADMIN)$",
         message = "Role must be a valid value (ADMIN or USER)"

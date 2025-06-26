@@ -2,6 +2,7 @@ package com.archivumlibris.application.service.user;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.archivumlibris.domain.model.user.User;
 import com.archivumlibris.domain.port.in.user.UserUseCase;
 import com.archivumlibris.domain.port.out.user.UserRepositoryPort;
+import com.archivumlibris.dto.request.user.UserPatchRequestDTO;
+import com.archivumlibris.dto.request.user.UserRequestDTO;
+import com.archivumlibris.dto.response.user.UserResponseDTO;
 import com.archivumlibris.exception.user.UserNotFoundException;
+import com.archivumlibris.mapper.user.UserDTOMapper;
 import com.archivumlibris.shared.exception.InvalidDataException;
 import com.archivumlibris.shared.exception.InvalidPageException;
 
@@ -22,16 +27,18 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public void createUser(User user) {
+    public void create(UserRequestDTO userRequestDTO) {
+        User user = UserDTOMapper.toModel(userRequestDTO);
         validateUserData(user);
         this.userRepositoryPort.save(user);
     }
 
     @Override
-    public void updateUser(Long userId, User user) {
+    public void update(Long userId, UserPatchRequestDTO userPatchRequestDTO) {
         User existingUser = this.userRepositoryPort.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
+        User user = UserDTOMapper.toModel(userPatchRequestDTO);
         if (user.getName() != null && !user.getName().trim().isEmpty()) {
             existingUser.setName(user.getName());
         }
@@ -49,7 +56,7 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void delete(Long userId) {
         if (!this.userRepositoryPort.findById(userId).isPresent()) {
             throw new UserNotFoundException();
         }
@@ -58,17 +65,17 @@ public class UserService implements UserUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> findById(Long userId) {
+    public Optional<UserResponseDTO> findById(Long userId) {
         Optional<User> user = this.userRepositoryPort.findById(userId);
         if (!user.isPresent()) {
             throw new UserNotFoundException();
         }
-        return user;
+        return user.map(UserDTOMapper::toResponseDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAllUsers(String name, String email, int page) {
+    public List<UserResponseDTO> findAll(String name, String email, int page) {
         if (page < 1) {
             throw new InvalidPageException();
         }
@@ -77,7 +84,9 @@ public class UserService implements UserUseCase {
         Pageable pageable = PageRequest.of(pageIndex, 10);
 
         Page<User> users = this.userRepositoryPort.findAll(name, email, pageable);
-        return users.getContent();
+        return users.getContent().stream()
+                .map(UserDTOMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
     private void validateUserData(User user) {
