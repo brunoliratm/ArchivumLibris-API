@@ -9,9 +9,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import com.archivumlibris.exception.book.BookNotFoundException;
-import com.archivumlibris.exception.book.InvalidBookDataException;
+import com.archivumlibris.exception.user.UserNotFoundException;
 
 @ControllerAdvice
 public class GlobalHandlerException {
@@ -23,8 +24,15 @@ public class GlobalHandlerException {
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(InvalidBookDataException.class)
-  public ResponseEntity<Map<String, Object>> handleInvalidBookData(InvalidBookDataException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(InvalidDataException.class)
+  public ResponseEntity<Map<String, Object>> handleInvalidBookData(InvalidDataException ex) {
     Map<String, Object> body = new HashMap<>();
     body.put("message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
@@ -71,5 +79,22 @@ public class GlobalHandlerException {
     body.put("message", "An unexpected error occurred");
     body.put("error", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<Map<String, Object>> handleTypeMismatchException(
+      MethodArgumentTypeMismatchException ex) {
+    Map<String, Object> body = new HashMap<>();
+    String parameterName = ex.getName();
+    Object value = ex.getValue();
+    String providedValue = (value != null) ? String.valueOf(value) : "null";
+
+    if ("id".equals(parameterName)) {
+    body.put("message", "Invalid ID. Use only numbers (e.g., 1, 2, 3).");
+    } else {
+    body.put("message", String.format("Invalid value '%s' for %s.", providedValue, parameterName));
+    }
+
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 }

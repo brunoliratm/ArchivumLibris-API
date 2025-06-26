@@ -10,12 +10,11 @@ public interface BookRepositoryPort {
     void save(Book book);
 
     Page<Book> findAll(
-        BookGenre genre,
-        String title,
-        String publisher,
-        String author,
-        Pageable pageable
-    );
+            BookGenre genre,
+            String title,
+            String publisher,
+            String author,
+            Pageable pageable);
 
     Optional<Book> findById(Long id);
 

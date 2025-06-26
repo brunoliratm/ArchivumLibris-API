@@ -1,7 +1,7 @@
 package com.archivumlibris.adapter.out.persistence.book;
 
 import com.archivumlibris.adapter.out.jpa.book.BookEntity;
-import com.archivumlibris.adapter.out.jpa.book.BookRepositoryJpa;
+import com.archivumlibris.adapter.out.jpa.book.BookRepositoryJPA;
 import com.archivumlibris.domain.model.book.Book;
 import com.archivumlibris.domain.model.book.BookGenre;
 import com.archivumlibris.domain.port.out.book.BookRepositoryPort;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookRepositoryImpl implements BookRepositoryPort {
 
-    private final BookRepositoryJpa bookRepositoryJpa;
+    private final BookRepositoryJPA bookRepositoryJpa;
 
-    public BookRepositoryImpl(BookRepositoryJpa bookRepositoryJpa) {
+    public BookRepositoryImpl(BookRepositoryJPA bookRepositoryJpa) {
         this.bookRepositoryJpa = bookRepositoryJpa;
     }
 
@@ -41,7 +41,8 @@ public class BookRepositoryImpl implements BookRepositoryPort {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return bookRepositoryJpa.findById(id).map(BookMapper::toDomain);
+        return bookRepositoryJpa.findById(id)
+        .map(BookMapper::toDomain);
     }
 
     @Override

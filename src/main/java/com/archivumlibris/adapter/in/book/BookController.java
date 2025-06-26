@@ -1,10 +1,8 @@
 package com.archivumlibris.adapter.in.book;
 
-import com.archivumlibris.domain.model.book.Book;
 import com.archivumlibris.domain.port.in.book.BookUseCase;
 import com.archivumlibris.dto.request.book.BookRequestDTO;
 import com.archivumlibris.dto.response.book.BookResponseDTO;
-import com.archivumlibris.mapper.book.BookDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -12,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,8 +78,7 @@ public class BookController {
     public ResponseEntity<Void> create(
         @RequestBody @Valid BookRequestDTO bookRequestDTO
     ) {
-        Book book = BookDTOMapper.toModel(bookRequestDTO);
-        this.bookUseCase.create(book);
+        this.bookUseCase.create(bookRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -132,10 +128,7 @@ public class BookController {
         @RequestParam(required = false, defaultValue = "1") int page
     ) {
         return ResponseEntity.ok(
-            this.bookUseCase.findAllBooks(genre, title, publisher, author, page)
-                .stream()
-                .map(BookDTOMapper::toResponseDTO)
-                .collect(Collectors.toList())
+            this.bookUseCase.findAll(genre, title, publisher, author, page)
         );
     }
 
@@ -172,7 +165,6 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookResponseDTO> getBookById(@PathVariable Long id) {
         return this.bookUseCase.findById(id)
-            .map(BookDTOMapper::toResponseDTO)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
@@ -233,8 +225,7 @@ public class BookController {
         @PathVariable Long id,
         @RequestBody @Valid BookRequestDTO bookRequestDTO
     ) {
-        Book book = BookDTOMapper.toModel(bookRequestDTO);
-        bookUseCase.update(id, book);
+        bookUseCase.update(id, bookRequestDTO);
         return ResponseEntity.noContent().build();
     }
 
