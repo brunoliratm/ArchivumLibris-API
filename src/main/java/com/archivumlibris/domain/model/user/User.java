@@ -50,6 +50,8 @@ public class User {
         return role;
     }
 
-    public void setRole(UserRole role) {}
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 
 }

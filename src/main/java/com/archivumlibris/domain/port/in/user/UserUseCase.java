@@ -8,7 +8,7 @@ public interface UserUseCase {
 
     void createUser(User user);
 
-    void updateUser(User user);
+    void updateUser(Long userId, User user);
 
     void deleteUser(Long userId);
 

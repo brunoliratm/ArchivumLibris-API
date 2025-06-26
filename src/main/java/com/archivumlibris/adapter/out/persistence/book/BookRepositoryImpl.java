@@ -41,7 +41,8 @@ public class BookRepositoryImpl implements BookRepositoryPort {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return bookRepositoryJpa.findById(id).map(BookMapper::toDomain);
+        return bookRepositoryJpa.findById(id)
+        .map(BookMapper::toDomain);
     }
 
     @Override

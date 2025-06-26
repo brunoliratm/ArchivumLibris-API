@@ -2,18 +2,19 @@ package com.archivumlibris.domain.port.in.book;
 
 import java.util.List;
 import java.util.Optional;
-import com.archivumlibris.domain.model.book.Book;
+import com.archivumlibris.dto.request.book.BookRequestDTO;
+import com.archivumlibris.dto.response.book.BookResponseDTO;
 
 public interface BookUseCase {
-    void create(Book book);
+    void create(BookRequestDTO bookRequestDTO);
 
-    void update(Long id, Book book);
+    void update(Long bookId, BookRequestDTO bookRequestDTO);
 
-    void delete(Long id);
+    void delete(Long bookId);
 
-    Optional<Book> findById(Long id);
+    Optional<BookResponseDTO> findById(Long bookId);
 
-    List<Book> findAllBooks(
+    List<BookResponseDTO> findAllBooks(
         String genre,
         String title,
         String publisher,

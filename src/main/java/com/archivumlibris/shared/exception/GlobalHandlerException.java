@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import com.archivumlibris.exception.book.BookNotFoundException;
-import com.archivumlibris.exception.book.InvalidBookDataException;
+import com.archivumlibris.exception.user.UserNotFoundException;
 
 @ControllerAdvice
 public class GlobalHandlerException {
@@ -24,8 +24,15 @@ public class GlobalHandlerException {
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(InvalidBookDataException.class)
-  public ResponseEntity<Map<String, Object>> handleInvalidBookData(InvalidBookDataException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(InvalidDataException.class)
+  public ResponseEntity<Map<String, Object>> handleInvalidBookData(InvalidDataException ex) {
     Map<String, Object> body = new HashMap<>();
     body.put("message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);

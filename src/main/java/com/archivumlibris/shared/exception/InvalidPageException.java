@@ -1,7 +1,7 @@
 package com.archivumlibris.shared.exception;
 
 public class InvalidPageException extends RuntimeException {
-  public InvalidPageException(String message) {
-    super(message);
+  public InvalidPageException() {
+    super("Page number must be greater than 0");
   }
 }
