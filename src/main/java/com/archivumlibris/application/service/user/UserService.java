@@ -3,9 +3,14 @@ package com.archivumlibris.application.service.user;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.archivumlibris.domain.model.user.User;
@@ -22,12 +27,14 @@ import com.archivumlibris.shared.exception.InvalidPageException;
 
 @Service
 @Transactional
-public class UserService implements UserUseCase {
+public class UserService implements UserUseCase, UserDetailsService {
 
     private final UserRepositoryPort userRepositoryPort;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepositoryPort userRepositoryPort) {
+    public UserService(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder) {
         this.userRepositoryPort = userRepositoryPort;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,17 +42,18 @@ public class UserService implements UserUseCase {
         userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
             throw new InvalidDataException("Email already in use");
         });
-        User user = UserDTOMapper.toModel(userRequestDTO);
+        var user = UserDTOMapper.toModel(userRequestDTO);
         validateUserData(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userRepositoryPort.save(user);
     }
 
     @Override
     public void update(Long userId, UserPatchRequestDTO userPatchRequestDTO) {
-        User existingUser =
+        var existingUser =
                 this.userRepositoryPort.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        User user = UserDTOMapper.toModel(userPatchRequestDTO);
+        var user = UserDTOMapper.toModel(userPatchRequestDTO);
         if (user.getName() != null && !user.getName().trim().isEmpty()) {
             existingUser.setName(user.getName());
         }
@@ -59,7 +67,7 @@ public class UserService implements UserUseCase {
             existingUser.setEmail(userPatchRequestDTO.email());
         }
         if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
-            existingUser.setPassword(user.getPassword());
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if (user.getRole() != null) {
             try {
@@ -120,4 +128,18 @@ public class UserService implements UserUseCase {
         }
     }
 
+    @Cacheable(value = "users", key = "#email")
+    public UserDetails loadUserByEmail(String email) {
+        var user = userRepositoryPort.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with email: " + email));
+
+        String authority = "ROLE_" + user.getRole().name();
+        return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
+                .password(user.getPassword()).authorities(authority).build();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return loadUserByEmail(username);
+    }
 }
