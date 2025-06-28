@@ -39,12 +39,13 @@ public class UserService implements UserUseCase, UserDetailsService {
 
     @Override
     public void create(UserRequestDTO userRequestDTO) {
-        userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
+        this.userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
             throw new InvalidDataException("Email already in use");
         });
         var user = UserDTOMapper.toModel(userRequestDTO);
         validateUserData(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(UserRole.USER);
         this.userRepositoryPort.save(user);
     }
 
@@ -59,7 +60,7 @@ public class UserService implements UserUseCase, UserDetailsService {
         }
         if (userPatchRequestDTO.email() != null && !userPatchRequestDTO.email().trim().isEmpty()
                 && !userPatchRequestDTO.email().equals(existingUser.getEmail())) {
-            userRepositoryPort.findByEmail(userPatchRequestDTO.email()).ifPresent(u -> {
+            this.userRepositoryPort.findByEmail(userPatchRequestDTO.email()).ifPresent(u -> {
                 if (!u.getId().equals(userId)) {
                     throw new InvalidDataException("Email already in use by another user");
                 }
@@ -69,14 +70,6 @@ public class UserService implements UserUseCase, UserDetailsService {
         if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (user.getRole() != null) {
-            try {
-                existingUser.setRole(UserRole.valueOf(userPatchRequestDTO.role()));
-            } catch (IllegalArgumentException e) {
-                throw new InvalidDataException("Invalid role: " + userPatchRequestDTO.role());
-            }
-        }
-
         this.userRepositoryPort.save(existingUser);
     }
 
@@ -123,23 +116,24 @@ public class UserService implements UserUseCase, UserDetailsService {
         if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             throw new InvalidDataException("User password cannot be empty");
         }
-        if (user.getRole() == null) {
-            throw new InvalidDataException("User role cannot be null");
-        }
     }
 
     @Cacheable(value = "users", key = "#email")
     public UserDetails loadUserByEmail(String email) {
-        var user = userRepositoryPort.findByEmail(email).orElseThrow(
+        var user = this.userRepositoryPort.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with email: " + email));
-
-        String authority = "ROLE_" + user.getRole().name();
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
-                .password(user.getPassword()).authorities(authority).build();
+                .password(user.getPassword()).authorities(user.getRole().name()).build();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return loadUserByEmail(username);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findByEmail(String email) {
+        return this.userRepositoryPort.findByEmail(email);
+    }
+
 }

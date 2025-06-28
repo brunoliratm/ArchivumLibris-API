@@ -2,7 +2,6 @@ package com.archivumlibris.dto.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UserRequestDTO(
@@ -16,10 +15,6 @@ public record UserRequestDTO(
 
     @NotBlank(message = "password is required")
     @Size(min = 6, message = "Password requires a minimum of 6 characters")
-    String password,
-
-    @Pattern(regexp = "^(USER|ADMIN)$", message = "Role must be a valid value (ADMIN or USER)")
-    @NotBlank(message = "role is required")
-    String role
+    String password
 ) {
 }

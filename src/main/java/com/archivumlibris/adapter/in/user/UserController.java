@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "Users", description = "Endpoints for managing users")
+@Tag(name = "Users",
+        description = "Endpoints para gerenciamento de usuários. As respostas de erro seguem o padrão global do sistema, incluindo mensagens para erros de autenticação e autorização.")
 public class UserController {
 
     private final UserUseCase userUseCase;
@@ -43,7 +44,19 @@ public class UserController {
                                     @ExampleObject(name = "Missing Required Fields",
                                             value = "{\"message\": \"name is required\"}"),
                                     @ExampleObject(name = "Invalid Email",
-                                            value = "{\"message\": \"Email must be valid\"}")})),
+                                            value = "{\"message\": \"Invalid Email\"}"),
+                                    @ExampleObject(name = "Invalid Password",
+                                            value = "{\"message\": \"Password requires a minimum of 6 characters\"}")})),
+                    @ApiResponse(responseCode = "401",
+                            description = "Não autenticado (token ausente ou inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+                    @ApiResponse(responseCode = "403",
+                            description = "Acesso negado (sem permissão ou token inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
                     @ApiResponse(responseCode = "500", description = "Internal server error",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
@@ -63,6 +76,16 @@ public class UserController {
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(name = "Invalid Pagination",
                                             value = "{\"message\": \"Page index must not be less than zero\"}"))),
+                    @ApiResponse(responseCode = "401",
+                            description = "Não autenticado (token ausente ou inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+                    @ApiResponse(responseCode = "403",
+                            description = "Acesso negado (sem permissão ou token inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
                     @ApiResponse(responseCode = "500", description = "Internal server error",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
@@ -83,6 +106,16 @@ public class UserController {
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
                                             value = "{\"message\": \"User not found\"}"))),
+                    @ApiResponse(responseCode = "401",
+                            description = "Não autenticado (token ausente ou inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+                    @ApiResponse(responseCode = "403",
+                            description = "Acesso negado (sem permissão ou token inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
                     @ApiResponse(responseCode = "500", description = "Internal server error",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
@@ -98,13 +131,25 @@ public class UserController {
             responses = {
                     @ApiResponse(responseCode = "204", description = "User updated successfully"),
                     @ApiResponse(responseCode = "400", description = "Invalid user data",
-                            content = @Content(mediaType = "application/json",
-                                    examples = @ExampleObject(name = "Invalid Email",
-                                            value = "{\"message\": \"Email format is invalid. Please provide a valid email address.\"}"))),
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(name = "Invalid Email",
+                                            value = "{\"message\": \"Invalid Email\"}"),
+                                    @ExampleObject(name = "Invalid Password",
+                                            value = "{\"message\": \"Password requires a minimum of 6 characters\"}")})),
                     @ApiResponse(responseCode = "404", description = "User not found",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
                                             value = "{\"message\": \"User not found\"}"))),
+                    @ApiResponse(responseCode = "401",
+                            description = "Não autenticado (token ausente ou inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+                    @ApiResponse(responseCode = "403",
+                            description = "Acesso negado (sem permissão ou token inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
                     @ApiResponse(responseCode = "500", description = "Internal server error",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
@@ -123,6 +168,16 @@ public class UserController {
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
                                             value = "{\"message\": \"User not found\"}"))),
+                    @ApiResponse(responseCode = "401",
+                            description = "Não autenticado (token ausente ou inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+                    @ApiResponse(responseCode = "403",
+                            description = "Acesso negado (sem permissão ou token inválido)",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
                     @ApiResponse(responseCode = "500", description = "Internal server error",
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
