@@ -3,9 +3,14 @@ package com.archivumlibris.application.service.user;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.archivumlibris.domain.model.user.User;
@@ -22,36 +27,40 @@ import com.archivumlibris.shared.exception.InvalidPageException;
 
 @Service
 @Transactional
-public class UserService implements UserUseCase {
+public class UserService implements UserUseCase, UserDetailsService {
 
     private final UserRepositoryPort userRepositoryPort;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepositoryPort userRepositoryPort) {
+    public UserService(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder) {
         this.userRepositoryPort = userRepositoryPort;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void create(UserRequestDTO userRequestDTO) {
-        userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
+        this.userRepositoryPort.findByEmail(userRequestDTO.email()).ifPresent(u -> {
             throw new InvalidDataException("Email already in use");
         });
-        User user = UserDTOMapper.toModel(userRequestDTO);
+        var user = UserDTOMapper.toModel(userRequestDTO);
         validateUserData(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(UserRole.USER);
         this.userRepositoryPort.save(user);
     }
 
     @Override
     public void update(Long userId, UserPatchRequestDTO userPatchRequestDTO) {
-        User existingUser =
+        var existingUser =
                 this.userRepositoryPort.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        User user = UserDTOMapper.toModel(userPatchRequestDTO);
+        var user = UserDTOMapper.toModel(userPatchRequestDTO);
         if (user.getName() != null && !user.getName().trim().isEmpty()) {
             existingUser.setName(user.getName());
         }
         if (userPatchRequestDTO.email() != null && !userPatchRequestDTO.email().trim().isEmpty()
                 && !userPatchRequestDTO.email().equals(existingUser.getEmail())) {
-            userRepositoryPort.findByEmail(userPatchRequestDTO.email()).ifPresent(u -> {
+            this.userRepositoryPort.findByEmail(userPatchRequestDTO.email()).ifPresent(u -> {
                 if (!u.getId().equals(userId)) {
                     throw new InvalidDataException("Email already in use by another user");
                 }
@@ -59,16 +68,8 @@ public class UserService implements UserUseCase {
             existingUser.setEmail(userPatchRequestDTO.email());
         }
         if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
-            existingUser.setPassword(user.getPassword());
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (user.getRole() != null) {
-            try {
-                existingUser.setRole(UserRole.valueOf(userPatchRequestDTO.role()));
-            } catch (IllegalArgumentException e) {
-                throw new InvalidDataException("Invalid role: " + userPatchRequestDTO.role());
-            }
-        }
-
         this.userRepositoryPort.save(existingUser);
     }
 
@@ -115,9 +116,24 @@ public class UserService implements UserUseCase {
         if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             throw new InvalidDataException("User password cannot be empty");
         }
-        if (user.getRole() == null) {
-            throw new InvalidDataException("User role cannot be null");
-        }
+    }
+
+    @Cacheable(value = "users", key = "#email")
+    public UserDetails loadUserByEmail(String email) {
+        var user = this.userRepositoryPort.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with email: " + email));
+        return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
+                .password(user.getPassword()).authorities(user.getRole().name()).build();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return loadUserByEmail(username);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findByEmail(String email) {
+        return this.userRepositoryPort.findByEmail(email);
     }
 
 }
