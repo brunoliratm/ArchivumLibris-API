@@ -95,7 +95,7 @@ public class GlobalHandlerException {
             body.put("message", "Invalid ID. Use only numbers (e.g., 1, 2, 3).");
         } else {
             body.put("message",
-                    String.format("Invalid value '%s' for %s.", providedValue, parameterName));
+                    "Invalid value '%s' for %s.".formatted(providedValue, parameterName));
         }
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);

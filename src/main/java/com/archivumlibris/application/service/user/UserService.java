@@ -75,7 +75,7 @@ public class UserService implements UserUseCase, UserDetailsService {
 
     @Override
     public void delete(Long userId) {
-        if (!this.userRepositoryPort.findById(userId).isPresent()) {
+        if (this.userRepositoryPort.findById(userId).isEmpty()) {
             throw new UserNotFoundException();
         }
         this.userRepositoryPort.delete(userId);
@@ -85,7 +85,7 @@ public class UserService implements UserUseCase, UserDetailsService {
     @Transactional(readOnly = true)
     public Optional<UserResponseDTO> findById(Long userId) {
         Optional<User> user = this.userRepositoryPort.findById(userId);
-        if (!user.isPresent()) {
+        if (user.isEmpty() || user.get().isDeleted()) {
             throw new UserNotFoundException();
         }
         return user.map(UserDTOMapper::toResponseDTO);

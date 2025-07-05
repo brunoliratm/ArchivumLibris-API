@@ -44,7 +44,10 @@ public class UserRepositoryImpl implements UserRepositoryPort {
 
     @Override
     public void delete(Long id) {
-        userRepositoryJpa.deleteById(id);
+        userRepositoryJpa.findById(id).ifPresent(entity ->{
+        entity.setDeleted(true);
+        userRepositoryJpa.save(entity);
+    });
     }
 
     @Override

@@ -38,7 +38,7 @@ public class BookService implements BookUseCase {
 
     @Override
     public void update(Long bookId, BookRequestDTO bookRequestDTO) {
-        if (!this.bookRepositoryPort.findById(bookId).isPresent()) {
+        if (this.bookRepositoryPort.findById(bookId).isEmpty()) {
             throw new BookNotFoundException();
         }
         Book book = BookDTOMapper.toModel(bookRequestDTO);
@@ -48,7 +48,7 @@ public class BookService implements BookUseCase {
 
     @Override
     public void delete(Long bookId) {
-        if (!this.bookRepositoryPort.findById(bookId).isPresent()) {
+        if (this.bookRepositoryPort.findById(bookId).isEmpty()) {
             throw new BookNotFoundException();
         }
         this.bookRepositoryPort.delete(bookId);
@@ -58,7 +58,7 @@ public class BookService implements BookUseCase {
     @Transactional(readOnly = true)
     public Optional<BookResponseDTO> findById(Long bookId) {
         Optional<Book> book = this.bookRepositoryPort.findById(bookId);
-        if (!book.isPresent()) {
+        if (book.isEmpty()) {
             throw new BookNotFoundException();
         }
         return book.map(BookDTOMapper::toResponseDTO);
