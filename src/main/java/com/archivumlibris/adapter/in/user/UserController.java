@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "Users",
-        description = "Endpoints para gerenciamento de usuários. As respostas de erro seguem o padrão global do sistema, incluindo mensagens para erros de autenticação e autorização.")
+        description = "Endpoints for User Managemant")
 public class UserController {
 
     private final UserUseCase userUseCase;

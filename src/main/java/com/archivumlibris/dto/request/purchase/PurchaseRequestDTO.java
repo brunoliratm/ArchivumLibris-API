@@ -1,6 +1,5 @@
 package com.archivumlibris.dto.request.purchase;
 
-import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -19,11 +18,7 @@ public record PurchaseRequestDTO(
     @Pattern(
         regexp = "^(CREDIT_CARD|DEBIT_CARD|PIX|PAYPAL|BOLETO|OTHER)$",
         message = "Payment method must be one of: CREDIT_CARD, DEBIT_CARD, PIX, PAYPAL, BOLETO, OTHER")
-    String payMethod,
-
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be positive")
-    BigDecimal price
+    String payMethod
 ) {
 
 }
