@@ -42,10 +42,10 @@ public class PurchaseService implements PurchaseUseCase {
 
     @Override
     public void create(PurchaseRequestDTO purchaseRequestDTO) {
-        User user = userRepositoryPort.findById(purchaseRequestDTO.UserId())
+        User user = userRepositoryPort.findById(purchaseRequestDTO.userId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Book book = bookRepositoryPort.findById(purchaseRequestDTO.BookId())
+        Book book = bookRepositoryPort.findById(purchaseRequestDTO.bookId())
                 .orElseThrow(BookNotFoundException::new);
 
         PayMethod payMethodEnum = null;

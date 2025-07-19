@@ -9,7 +9,7 @@ public interface PurchaseUseCase {
 
     void create(PurchaseRequestDTO purchaseRequestDTO);
 
-    List<PurchaseResponseDTO> findAll(String payMethod, Long gameId, int page);
+    List<PurchaseResponseDTO> findAll(String payMethod, Long bookId, int page);
 
     Optional<PurchaseResponseDTO> findById(Long Id);
 }
