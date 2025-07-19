@@ -12,11 +12,10 @@ public interface PurchaseRepositoryPort {
 
     Page<Purchase> findAll (
         PayMethod payMethod,
-        Long gameId,
-        Long userId,
+        Long bookId,
         Pageable pageable
     );
 
     Optional<Purchase> findById (Long Id);
-    
+
 }

@@ -12,7 +12,6 @@ import com.archivumlibris.shared.exception.InvalidDataException;
 import com.archivumlibris.shared.exception.InvalidPageException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +86,7 @@ public class BookService implements BookUseCase {
                 this.bookRepositoryPort.findAll(genreEnum, title, publisher, author, pageable);
         return books.getContent().stream()
                 .map(BookDTOMapper::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void validateBookData(Book book) {

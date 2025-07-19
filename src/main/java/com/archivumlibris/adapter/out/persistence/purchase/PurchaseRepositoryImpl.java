@@ -25,12 +25,11 @@ public class PurchaseRepositoryImpl implements PurchaseRepositoryPort {
     }
 
     @Override
-    public Page<Purchase> findAll(PayMethod payMethod, Long gameId, Long userId,
+    public Page<Purchase> findAll(PayMethod payMethod, Long bookId,
             Pageable pageable) {
-        return this.purchaseRepositoryJPA.findAllByPayMethodContainingIgnoreCaseAndBookIdAndUserId(
-            payMethod.name(),
-            gameId,
-            userId,
+        return this.purchaseRepositoryJPA.findAll(
+            payMethod,
+            bookId,
             pageable)
             .map(PurchaseMapper::toDomain);
     }
