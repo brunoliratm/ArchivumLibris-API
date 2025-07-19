@@ -21,7 +21,8 @@ public class UserMapper {
             entity.getName(),
             entity.getEmail(),
             entity.getPassword(),
-            entity.getRole()
+            entity.getRole(),
+            entity.isDeleted()
         );
     }
 }

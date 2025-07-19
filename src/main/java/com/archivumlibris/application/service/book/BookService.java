@@ -12,7 +12,6 @@ import com.archivumlibris.shared.exception.InvalidDataException;
 import com.archivumlibris.shared.exception.InvalidPageException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +37,7 @@ public class BookService implements BookUseCase {
 
     @Override
     public void update(Long bookId, BookRequestDTO bookRequestDTO) {
-        if (!this.bookRepositoryPort.findById(bookId).isPresent()) {
+        if (this.bookRepositoryPort.findById(bookId).isEmpty()) {
             throw new BookNotFoundException();
         }
         Book book = BookDTOMapper.toModel(bookRequestDTO);
@@ -48,7 +47,7 @@ public class BookService implements BookUseCase {
 
     @Override
     public void delete(Long bookId) {
-        if (!this.bookRepositoryPort.findById(bookId).isPresent()) {
+        if (this.bookRepositoryPort.findById(bookId).isEmpty()) {
             throw new BookNotFoundException();
         }
         this.bookRepositoryPort.delete(bookId);
@@ -58,7 +57,7 @@ public class BookService implements BookUseCase {
     @Transactional(readOnly = true)
     public Optional<BookResponseDTO> findById(Long bookId) {
         Optional<Book> book = this.bookRepositoryPort.findById(bookId);
-        if (!book.isPresent()) {
+        if (book.isEmpty()) {
             throw new BookNotFoundException();
         }
         return book.map(BookDTOMapper::toResponseDTO);
@@ -87,7 +86,7 @@ public class BookService implements BookUseCase {
                 this.bookRepositoryPort.findAll(genreEnum, title, publisher, author, pageable);
         return books.getContent().stream()
                 .map(BookDTOMapper::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void validateBookData(Book book) {

@@ -1,5 +1,6 @@
 package com.archivumlibris.domain.model.user;
 
+
 public class User {
 
     private Long id;
@@ -7,6 +8,8 @@ public class User {
     private String email;
     private String password;
     private UserRole role;
+    private boolean deleted = false;
+
 
     public User() {}
 
@@ -15,13 +18,15 @@ public class User {
         String name,
         String email,
         String password,
-        UserRole role
+        UserRole role,
+        boolean deleted
     ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -54,4 +59,11 @@ public class User {
         this.role = role;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

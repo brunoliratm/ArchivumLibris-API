@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/books")
 @Tag(name = "Books",
-        description = "Endpoints for book management. Error responses follow the system's global standard, including messages for authentication and authorization errors.")
+        description = "Endpoints for book management.")
 public class BookController {
 
     private final BookUseCase bookUseCase;

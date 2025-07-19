@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import com.archivumlibris.exception.book.BookNotFoundException;
+import com.archivumlibris.exception.purchase.PurchaseNotFoundException;
 import com.archivumlibris.exception.user.UserNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -28,6 +29,13 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PurchaseNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handlePurchaseNotFound(PurchaseNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
@@ -95,7 +103,7 @@ public class GlobalHandlerException {
             body.put("message", "Invalid ID. Use only numbers (e.g., 1, 2, 3).");
         } else {
             body.put("message",
-                    String.format("Invalid value '%s' for %s.", providedValue, parameterName));
+                    "Invalid value '%s' for %s.".formatted(providedValue, parameterName));
         }
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);

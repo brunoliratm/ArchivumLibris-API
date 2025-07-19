@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI archivumLibrisOpenAPI() {
+    OpenAPI archivumLibrisOpenAPI() {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info().title("Archivum Libris API")
