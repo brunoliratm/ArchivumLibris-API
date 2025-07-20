@@ -180,9 +180,7 @@ End-to-end purchase flow:
    # Run the application
    ./mvnw spring-boot:run
    ```
-
-
-
+   
 ### 🚀 How to Run
 
 1. **Start the application** using one of the methods above
@@ -196,20 +194,6 @@ End-to-end purchase flow:
    - **Password:** admin2025@
 
 4. **Test the API** using Swagger UI or your preferred API client
-
-### 🔧 Development Tips
-
-- **Hot reload:** Use `./mvnw spring-boot:run` for development with automatic restart
-- **Debug mode:** Add `-Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"`
-- **Profile switching:** Use `-Dspring.profiles.active=dev` for different environments
-
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-./mvnw test
-```
 
 ## 📋 API Documentation
 
