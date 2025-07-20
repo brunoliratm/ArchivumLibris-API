@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "Purchases", description = "Endpoints for purchase management")
 public class PurchaseController {
 
-    private PurchaseUseCase purchaseUseCase;
+    private final PurchaseUseCase purchaseUseCase;
 
     public PurchaseController(PurchaseUseCase purchaseUseCase) {
         this.purchaseUseCase = purchaseUseCase;

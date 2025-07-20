@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "Users",
-        description = "Endpoints for User Managemant")
+        description = "Endpoints for User Management")
 public class UserController {
 
     private final UserUseCase userUseCase;

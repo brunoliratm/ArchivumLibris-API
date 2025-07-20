@@ -1,9 +1,17 @@
-{
-    "properties": [
-        {
-            "name": "jwt.secret",
-            "type": "java.lang.String",
-            "description": "Secret key used for JWT token signing and validation"
-        }
-    ]
-}
+{"properties": [
+    {
+        "name": "jwt.secret",
+        "type": "java.lang.String",
+        "description": "Secret key used for JWT token signing and validation"
+    },
+    {
+        "name": "admin.default.email",
+        "type": "java.lang.String",
+        "description": "Default administrator email address used for initial account setup"
+    },
+    {
+        "name": "admin.default.password",
+        "type": "java.lang.String",
+        "description": "Default administrator password used for initial account setup"
+    }
+]}

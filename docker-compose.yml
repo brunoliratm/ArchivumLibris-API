@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: archivumlibris-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=db:5432/ala
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - JWT_SECRET=archivumlibris_jwt_secret_for_development_only
+      - ADMIN_DEFAULT_EMAIL=admin@archivumlibris.com
+      - ADMIN_DEFAULT_PASSWORD=admin2025@
+    networks:
+      - archivumlibris-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: archivumlibris-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ala
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - archivumlibris-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: archivumlibris-postgres-data
+
+networks:
+  archivumlibris-network:
+    name: archivumlibris-network
+    driver: bridge
