@@ -32,7 +32,7 @@ public class AuthService implements AuthUseCase {
 
     @Override
     @Transactional
-    public String registerUser(UserRequestDTO userRequestDTO) {
+    public String register(UserRequestDTO userRequestDTO) {
         this.userService.create(userRequestDTO);
         return login(new AuthRequestDTO(userRequestDTO.email(), userRequestDTO.password()));
     }
@@ -71,4 +71,5 @@ public class AuthService implements AuthUseCase {
             throw new RuntimeException("Error during login");
         }
     }
+
 }
