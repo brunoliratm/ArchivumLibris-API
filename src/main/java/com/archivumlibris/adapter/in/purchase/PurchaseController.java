@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.archivumlibris.domain.model.user.User;
 import com.archivumlibris.domain.port.in.purchase.PurchaseUseCase;
 import com.archivumlibris.dto.request.purchase.PurchaseRequestDTO;
 import com.archivumlibris.dto.response.purchase.PurchaseResponseDTO;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 
@@ -34,42 +37,44 @@ public class PurchaseController {
     }
 
     @Operation(summary = "Create New Purchase",
-            description = "Creates a new purchase with the provided information",
-            responses = {
-                    @ApiResponse(responseCode = "201",
-                            description = "Purchase created successfully"),
-                    @ApiResponse(responseCode = "400", description = "Invalid purchase data",
-                            content = @Content(mediaType = "application/json", examples = {
-                                    @ExampleObject(name = "Missing User ID",
-                                            value = "{\"message\": \"Validation error\", \"errors\": {\"UserId\": \"User ID is required\"}}"),
-                                    @ExampleObject(name = "Missing Book ID",
-                                            value = "{\"message\": \"Validation error\", \"errors\": {\"BookId\": \"Book ID is required\"}}"),
-                                    @ExampleObject(name = "Invalid Payment Method",
-                                            value = "{\"message\": \"Validation error\", \"errors\": {\"payMethod\": \"Payment method must be one of: CREDIT_CARD, DEBIT_CARD, PIX, PAYPAL, BOLETO, OTHER\"}}")})),
-                    @ApiResponse(responseCode = "401",
-                            description = "Unauthorized (missing or invalid token)",
-                            content = @Content(mediaType = "application/json",
-                                    examples = @ExampleObject(
-                                            value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
-                    @ApiResponse(responseCode = "403",
-                            description = "Access denied (insufficient permission or invalid token)",
-                            content = @Content(mediaType = "application/json",
-                                    examples = @ExampleObject(
-                                            value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
-                    @ApiResponse(responseCode = "404", description = "Resource not found",
-                            content = @Content(mediaType = "application/json",
-                                    examples = {
-                                            @ExampleObject(name = "User Not Found",
-                                                    value = "{\"message\": \"User not found\"}"),
-                                            @ExampleObject(name = "Book Not Found",
-                                                    value = "{\"message\": \"Book not found\"}")})),
-                    @ApiResponse(responseCode = "500", description = "Internal server error",
-                            content = @Content(mediaType = "application/json",
-                                    examples = @ExampleObject(
-                                            value = "{\"message\": \"An unexpected error occurred\"}")))})
+        description = "Creates a new purchase with the provided information",
+        responses = {
+            @ApiResponse(responseCode = "201",
+                description = "Purchase created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid purchase data",
+                content = @Content(mediaType = "application/json", examples = {
+                    @ExampleObject(name = "Missing User ID",
+                        value = "{\"message\": \"Validation error\", \"errors\": {\"UserId\": \"User ID is required\"}}"),
+                    @ExampleObject(name = "Missing Book ID",
+                        value = "{\"message\": \"Validation error\", \"errors\": {\"BookId\": \"Book ID is required\"}}"),
+                    @ExampleObject(name = "Invalid Payment Method",
+                        value = "{\"message\": \"Validation error\", \"errors\": {\"payMethod\": \"Payment method must be one of: CREDIT_CARD, DEBIT_CARD, PIX, PAYPAL, BOLETO, OTHER\"}}")})),
+            @ApiResponse(responseCode = "401",
+                description = "Unauthorized (missing or invalid token)",
+                content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(
+                        value = "{\"message\": \"Unauthorized access. Authentication required.\"}"))),
+            @ApiResponse(responseCode = "403",
+                description = "Access denied (insufficient permission or invalid token)",
+                content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(
+                        value = "{\"message\": \"Access denied: you do not have permission to access this resource.\"}"))),
+            @ApiResponse(responseCode = "404", description = "Resource not found",
+                content = @Content(mediaType = "application/json",
+                    examples = {
+                        @ExampleObject(name = "User Not Found",
+                            value = "{\"message\": \"User not found\"}"),
+                        @ExampleObject(name = "Book Not Found",
+                            value = "{\"message\": \"Book not found\"}")})),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(
+                        value = "{\"message\": \"An unexpected error occurred\"}")))})
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
-        this.purchaseUseCase.create(purchaseRequestDTO);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        this.purchaseUseCase.create(user.getId(), purchaseRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
