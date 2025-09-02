@@ -267,6 +267,63 @@ docker run --name archivumlibris-api \
   -d archivumlibris-api
 ```
 
+## 📦 Example Requests
+
+### Create a Book
+
+```http
+POST /api/books
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "publisher": "Prentice Hall",
+  "genre": "NON_FICTION",
+  "price": 99.90
+}
+```
+
+### Register a User
+
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@email.com",
+  "password": "secret123"
+}
+```
+
+### Purchase a Book
+
+```http
+POST /api/purchases
+Content-Type: application/json
+Authorization: Bearer <JWT_TOKEN>
+
+{
+  "bookId": 1,
+  "payMethod": "PIX"
+}
+```
+
+## 🧪 Running Tests
+
+To run all unit and integration tests:
+
+```bash
+./mvnw test
+```
+
+## 📝 Troubleshooting
+
+- **Database connection issues:** Check your environment variables and Docker Compose logs.
+- **Port conflicts:** Ensure ports 8080 (API) and 5432 (Postgres) are free.
+- **Swagger not loading:** Wait for the backend to finish starting or check logs for errors.
+
 ## 🤝 Contributing
 
 Contributions make the open source community an amazing place to learn, inspire, and create. Any contributions you make
@@ -289,3 +346,4 @@ Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information
 **Author:** Bruno Lira
 **LinkedIn:** [brunoliratm](https://www.linkedin.com/in/brunoliratm/)
 **GitHub:** [@brunoliratm](https://github.com/brunoliratm)
+
