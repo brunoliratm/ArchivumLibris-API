@@ -7,7 +7,7 @@ import com.archivumlibris.dto.response.purchase.PurchaseResponseDTO;
 
 public interface PurchaseUseCase {
 
-    void create(PurchaseRequestDTO purchaseRequestDTO);
+    void create(Long userId, PurchaseRequestDTO purchaseRequestDTO);
 
     List<PurchaseResponseDTO> findAll(String payMethod, Long bookId, int page);
 

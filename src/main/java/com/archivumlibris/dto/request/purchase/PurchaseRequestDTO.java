@@ -6,10 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 public record PurchaseRequestDTO(
-    @NotNull(message = "User ID is required")
-    @Positive(message = "User ID must be greater than 0")
-    Long userId,
-
     @NotNull(message = "Book ID is required")
     @Positive(message = "Book ID must be greater than 0")
     Long bookId,

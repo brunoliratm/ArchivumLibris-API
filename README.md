@@ -3,7 +3,7 @@
 
   <br>
 
-**A modern RESTful API for book management built with Spring Boot**
+**A modern RESTful API for book management built with Spring Boot 3, Java 21 and Hexagonal Architecture**
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=flat-square&logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
@@ -129,17 +129,19 @@ End-to-end purchase flow:
 - Maven 3.8+
 - PostgreSQL 15+ (or use Docker)
 
-### � Installation & Setup
+### 🛠️ Installation & Setup
 
 #### Option 1: Docker Compose (Recommended)
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/brunoliratm/ArchivumLibris-API.git
    cd ArchivumLibris-API
    ```
 
 2. **Start with Docker Compose**
+
    ```bash
    docker-compose up --build -d
    ```
@@ -152,17 +154,20 @@ End-to-end purchase flow:
 #### Option 2: Manual Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/brunoliratm/ArchivumLibris-API.git
    cd ArchivumLibris-API
    ```
 
 2. **Setup PostgreSQL database**
+
    ```sql
    CREATE DATABASE ala;
    ```
 
 3. **Configure environment variables** (optional)
+
    ```bash
    export SPRING_DATASOURCE_URL=localhost:5432/ala
    export SPRING_DATASOURCE_USERNAME=postgres
@@ -173,6 +178,7 @@ End-to-end purchase flow:
    ```
 
 4. **Build and run the application**
+
    ```bash
    # Build the project
    ./mvnw clean install
@@ -180,16 +186,18 @@ End-to-end purchase flow:
    # Run the application
    ./mvnw spring-boot:run
    ```
-   
+
 ### 🚀 How to Run
 
 1. **Start the application** using one of the methods above
 2. **Access the API endpoints:**
+
    - **API Base URL:** http://localhost:8080
    - **Swagger UI:** http://localhost:8080/swagger-ui.html
    - **API Documentation:** http://localhost:8080/v3/api-docs
 
 3. **Login with default admin credentials:**
+
    - **Email:** admin@email.com
    - **Password:** admin2025@
 
@@ -218,7 +226,6 @@ The application uses Flyway for database migrations with the following main tabl
 - **users** - User accounts with roles and soft delete
 - **books** - Book catalog with metadata and pricing
 - **purchases** - Purchase transactions linking users and books
-
 
 ## 🐳 Docker Support
 
@@ -260,6 +267,63 @@ docker run --name archivumlibris-api \
   -d archivumlibris-api
 ```
 
+## 📦 Example Requests
+
+### Create a Book
+
+```http
+POST /api/books
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "publisher": "Prentice Hall",
+  "genre": "NON_FICTION",
+  "price": 99.90
+}
+```
+
+### Register a User
+
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@email.com",
+  "password": "secret123"
+}
+```
+
+### Purchase a Book
+
+```http
+POST /api/purchases
+Content-Type: application/json
+Authorization: Bearer <JWT_TOKEN>
+
+{
+  "bookId": 1,
+  "payMethod": "PIX"
+}
+```
+
+## 🧪 Running Tests
+
+To run all unit and integration tests:
+
+```bash
+./mvnw test
+```
+
+## 📝 Troubleshooting
+
+- **Database connection issues:** Check your environment variables and Docker Compose logs.
+- **Port conflicts:** Ensure ports 8080 (API) and 5432 (Postgres) are free.
+- **Swagger not loading:** Wait for the backend to finish starting or check logs for errors.
+
 ## 🤝 Contributing
 
 Contributions make the open source community an amazing place to learn, inspire, and create. Any contributions you make
@@ -278,3 +342,8 @@ Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information
 ## 📮 Contact
 
 **Project Link:** [https://github.com/brunoliratm/ArchivumLibris-API](https://github.com/brunoliratm/ArchivumLibris-API)
+
+**Author:** Bruno Lira
+**LinkedIn:** [brunoliratm](https://www.linkedin.com/in/brunoliratm/)
+**GitHub:** [@brunoliratm](https://github.com/brunoliratm)
+
