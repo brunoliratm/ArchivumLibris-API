@@ -26,15 +26,15 @@ public class SecurityConfig {
                 .sessionManagement(
                         sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/**")
-                        .permitAll().
-                        requestMatchers(HttpMethod.GET, "/api/auth/**").authenticated()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                        .permitAll().requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/**").authenticated()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
                         .requestMatchers("/api/books/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/users/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/purchases/**").authenticated()
-                        .requestMatchers("/api/purchases/**").hasAuthority("ADMIN").anyRequest()
-                        .authenticated())
+                        .requestMatchers("/api/purchases/**").hasAuthority("ADMIN")
+                        .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryHandler)
                         .accessDeniedHandler(accessDeniedHandler))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();

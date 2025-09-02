@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
-
 @RestController
 @RequestMapping("/api/purchases")
 @Tag(name = "Purchases", description = "Endpoints for purchase management")
@@ -73,7 +71,11 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        Object principal = authentication != null ? authentication.getPrincipal() : null;
+        if (!(principal instanceof User)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = (User) principal;
         this.purchaseUseCase.create(user.getId(), purchaseRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

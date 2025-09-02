@@ -107,12 +107,16 @@ public class AuthController {
                             content = @Content(mediaType = "application/json",
                                     examples = @ExampleObject(
                                             value = "{\"message\": \"User not found\"}")))})
-    @GetMapping("/userinfo")
+    @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> userInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return this.userUseCase.findById(user.getId()).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Object principal = authentication != null ? authentication.getPrincipal() : null;
+        if (principal instanceof User user) {
+            return this.userUseCase.findById(user.getId()).map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
 }
